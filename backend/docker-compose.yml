@@ -7,7 +7,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
+        image: sail-8.0/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -62,6 +62,15 @@ services:
             - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
+    adminer:
+        image: adminer
+        restart: always
+        networks:
+            - sail
+        depends_on:
+            - mysql
+        ports:
+            - 8080:8080
 networks:
     sail:
         driver: bridge
