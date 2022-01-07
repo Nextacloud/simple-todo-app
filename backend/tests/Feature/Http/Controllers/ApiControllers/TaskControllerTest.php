@@ -34,6 +34,27 @@ class TaskControllerTest extends TestCase
             );
     }
 
+    public function test_task_controller_show_shows_task()
+    {
+        $task = Task::factory()->create();
+
+        $response = $this->getJson(route('tasks.show', ['task_id' => $task->id]));
+
+        $response->assertStatus(200);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+                $json
+                    ->has('data', fn ($json) =>
+                        $json->where('id', $task->id)
+                            ->where('title', $task->title)
+                            ->where('description', $task->description)
+                            ->etc()
+                    )
+            );
+
+    }
+
     public function test_task_controller_store_creates_task()
     {
         $response = $this->postJson(route('tasks.store'), [
