@@ -21,4 +21,22 @@ class TaskFactory extends Factory
             'completed_at' => $is_completed ? $this->faker->dateTimeBetween('-1 week', 'now') : null,
         ];
     }
+
+    public function complete()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'completed_at' => $this->faker->dateTimeBetween('-1 week', 'now'),
+            ];
+        });
+    }
+
+    public function incomplete()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'completed_at' => null,
+            ];
+        });
+    }
 }

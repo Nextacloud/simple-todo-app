@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiControllers\TaskCompletionController;
 use App\Http\Controllers\ApiControllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,7 @@ Route::prefix('tasks')->group(function() {
     Route::get('/{task_id}', [TaskController::class, 'show'])->name('tasks.show');
     Route::patch('/{task_id}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/{task_id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+    Route::post('/{task}/complete', [TaskCompletionController::class, 'markAsCompleted'])->name('tasks.completion.complete');
+    Route::post('/{task}/incomplete', [TaskCompletionController::class, 'markAsIncompleted'])->name('tasks.completion.incomplete');
 });

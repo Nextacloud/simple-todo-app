@@ -10,9 +10,30 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'completed_at'];
+    protected $fillable = ['title', 'description'];
 
-    // Relationships
+    protected $casts = [
+        'completed_at' => 'datetime',
+    ];
+
+    // Methods
+
+    public function markAsCompleted(): self
+    {
+        return tap($this, function($instance) {
+            $instance->completed_at = now();
+            $instance->save();
+        });
+    }
+
+    public function markAsIncompleted(): self
+    {
+        return tap($this, function($instance) {
+            $instance->completed_at = null;
+            $instance->save();
+        });
+    }
+
 
     // Scopes
 
