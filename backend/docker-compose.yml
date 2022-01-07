@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./vendor/laravel/sail/runtimes/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -24,7 +24,6 @@ services:
         depends_on:
             - mysql
             - redis
-            - meilisearch
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -63,19 +62,6 @@ services:
             - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
-    meilisearch:
-        image: 'getmeili/meilisearch:latest'
-        platform: linux/x86_64
-        ports:
-            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-        volumes:
-            - 'sailmeilisearch:/data.ms'
-        networks:
-            - sail
-        healthcheck:
-            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
-            retries: 3
-            timeout: 5s
 networks:
     sail:
         driver: bridge
