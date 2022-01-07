@@ -47,9 +47,9 @@ class TaskCompletionController extends Controller
 
         try {
 
-            $completed_task = $task->markAsIncompleted();
+            $incompleted_task = $task->markAsIncompleted();
 
-            return new TaskResource($completed_task);
+            return new TaskResource($incompleted_task);
 
         } catch (Exception $error) {
             $this->logger->emergency('Fail to mark as incompleted for task id: ' . $task->id);
