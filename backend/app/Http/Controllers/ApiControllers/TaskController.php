@@ -46,7 +46,6 @@ class TaskController extends Controller
 
         $task_dto = $request->getTaskDto();
 
-
         $this->logger->info('Task DTO: ' . json_encode($task_dto));
 
         try {

@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Collection;
 class TaskService implements TaskServiceInterface
 {
 
-    public function paginate():Paginator
+    public function paginate(): Paginator
     {
-        return Task::paginate();
+        return Task::latest()->paginate();
     }
 
     public function list(): Collection
@@ -38,7 +38,7 @@ class TaskService implements TaskServiceInterface
 
     public function update(Task $task, TaskDto $dto): Task
     {
-        return tap($task, fn($task) =>
+        return tap($task, fn(Task $task) =>
             $task->update([
                 'title' => $dto->getTitle(),
                 'description' => $dto->getDescription(),
