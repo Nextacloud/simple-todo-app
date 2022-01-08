@@ -1,4 +1,4 @@
-export const usePagination = (taskPage, setTaskPage, otherTaskPage, lastPage) => {
+export const usePagination = (taskPage, setTaskPage, lastPage) => {
 
   const onClickPrev = () => {
     if (taskPage < 1) return;

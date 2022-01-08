@@ -12,7 +12,7 @@ export const IncompleteTasks = () => {
 
   const { data, isLoading } = useGetTasks('incompleted', incompletedTaskPage);
 
-  const { onClickPrev, onClickNext } = usePagination(incompletedTaskPage, setIncompletedTaskPage, completedTaskPage, data?.meta?.last_page);
+  const { onClickPrev, onClickNext } = usePagination(incompletedTaskPage, setIncompletedTaskPage, data?.meta?.last_page);
 
   const markTaskAsCompleted = async (taskId) => {
     await completeTask(taskId);
