@@ -1,4 +1,4 @@
-import { mutateTasks, mutateTasksList, useGetTasks } from "../../hooks/tasks.hooks";
+import { mutateTasks, useGetTasks } from "../../hooks/tasks.hooks";
 import { completeTask, deleteTask } from "../../services/tasks.service";
 import { TaskContainer } from "./task-container";
 import { Container } from "../common/container";
