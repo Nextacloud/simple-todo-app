@@ -1,4 +1,4 @@
-import { mutateTasks, useGetTasks } from "../../hooks/tasks.hooks";
+import { mutateTasks, mutateTasksList, useGetTasks } from "../../hooks/tasks.hooks";
 import { incompleteTask, deleteTask } from "../../services/tasks.service";
 import { TaskContainer } from "./task-container";
 import { Container } from "../common/container";
@@ -10,9 +10,9 @@ import { usePagination } from "../../hooks/pagination.hooks";
 export const CompletedTasks = () => {
   const { completedTaskPage, incompletedTaskPage, setCompletedTaskPage } = useContext(AppContext);
 
-  const { data, isLoading } = useGetTasks('completed', completedTaskPage);
+  const { data } = useGetTasks('completed', completedTaskPage);
 
-  const { onClickPrev, onClickNext } = usePagination(completedTaskPage, setCompletedTaskPage, data?.meta?.last_page);
+  const { onClickPrev, onClickNext } = usePagination(completedTaskPage, setCompletedTaskPage, data?.meta?.last_paget);
 
   const markTaskAsIncomplete = async (taskId) => {
     await incompleteTask(taskId);
@@ -46,7 +46,15 @@ export const CompletedTasks = () => {
         ))}
       </div>
 
-      <Pagination from={data?.meta?.from} to={data?.meta?.to} total={data?.meta?.total} onClickPrev={() => onClickPrev()} onClickNext={() => onClickNext()}/>
+
+
+      <Pagination
+        from={data?.meta?.from}
+        to={data?.meta?.to}
+        total={data?.meta?.total}
+        onClickPrev={() => onClickPrev()}
+        onClickNext={() => onClickNext()}
+      />
     </Container>
   )
 }

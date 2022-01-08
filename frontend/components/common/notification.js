@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext } from 'react'
 import { Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/outline'
 import { XIcon } from '@heroicons/react/solid'
