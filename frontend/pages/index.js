@@ -1,17 +1,20 @@
-import Head from 'next/head'
+import Link from 'next/link'
+
 import { CompletedTasks } from '../components/tasks/completed-tasks';
 import { IncompleteTasks } from '../components/tasks/incomplete-tasks';
 
 const Home = () => {
 
   return (
-    <div className="bg-gray-100 min-h-screen py-8 space-y-4 px-2">
-      <h1 className="text-center font-bold text-4xl my-4 text-blue-800">To Do List</h1>
-
+    <>
+      <div className='container mx-auto flex flex-row justify-end'>
+        <Link href="/tasks/create">
+          <a className='bg-blue-600 hover:bg-blue-700 text-blue-50 py-2 px-4 rounded-md justify-right'>Create Task</a>
+        </Link>
+      </div>
       <IncompleteTasks />
-
       <CompletedTasks />
-    </div>
+    </>
   )
 }
 
