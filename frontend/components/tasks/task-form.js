@@ -1,31 +1,44 @@
 import { Formik } from 'formik';
 import { useContext } from 'react';
 import { AppContext } from '../../context/app.context';
-import { createTask } from '../../services/tasks.service';
+import { createTask, updateTask } from '../../services/tasks.service';
 import { sleep } from '../../utils/common';
 import { ErrorText } from '../common/error-text';
 import { useRouter } from 'next/router'
 
-export const CreateTaskForm = () => {
+export const TaskForm = ({ task }) => {
+
   const { setNotification } = useContext(AppContext);
   const router = useRouter()
 
+  const buttonText = !!task ? "Update Task" : "Create Task";
+
+  const submitForm = async ({title, description}) => {
+    const res = !!task
+      ? await updateTask({id: task.id, title, description})
+      : await createTask({title, description})
+
+    return res;
+  }
+
   return (
     <Formik
-      initialValues={{ title: '', description: '' }}
+      initialValues={{ title: task?.title, description: task?.description }}
 
       onSubmit={async (values, { setSubmitting, setErrors }) => {
         await sleep(700);
 
         try {
-          const res = await createTask(values);
+          const res = await submitForm(values);
 
-          if (res.status !== 201) return;
+          if (res.status !== 201 && res.status !== 200) return;
+
+          const message = res.status === 201 ? 'Successfully created new task' : 'Successfully updated the task';
 
           setNotification({
             type: 'success',
             shown: true,
-            message: 'Successfully created new task'
+            message
           });
 
           await sleep(300);
@@ -82,7 +95,7 @@ export const CreateTaskForm = () => {
           </div>
 
           <button type="submit" disabled={isSubmitting} className='bg-blue-600 hover:bg-blue-700 text-blue-100 py-2 rounded-md'>
-            {!isSubmitting ? "Create Task" : "Submitting..."}
+            {!isSubmitting ? buttonText : "Submitting..."}
           </button>
         </form>
       )}

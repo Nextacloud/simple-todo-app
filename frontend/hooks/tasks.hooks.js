@@ -15,3 +15,15 @@ export const mutateTasks = () => {
   mutate(`/api/tasks?status=completed`)
   mutate(`/api/tasks?status=incompleted`)
 }
+
+export const useGetTask = (taskId) => {
+
+  const { data, error } = useSwr(`/api/tasks/${taskId}`, axiosFetcher);
+
+  return {
+    data: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+
+}
