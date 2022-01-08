@@ -34,6 +34,36 @@ class TaskControllerTest extends TestCase
             );
     }
 
+    public function test_task_controller_index_status_completed_has_completed_tasks_only()
+    {
+        Task::factory(5)->completed()->create();
+
+        Task::factory(5)->incompleted()->create();
+
+        $response = $this->getJson(route('tasks.index') . '?status=completed');
+
+        $response->assertStatus(200);
+
+        foreach ($response['data'] as $task) {
+            $this->assertTrue($task['is_completed']);
+        }
+    }
+
+    public function test_task_controller_index_status_incompleted_has_incompleted_tasks_only()
+    {
+        Task::factory(5)->completed()->create();
+
+        Task::factory(5)->incompleted()->create();
+
+        $response = $this->getJson(route('tasks.index') . '?status=incompleted');
+
+        $response->assertStatus(200);
+
+        foreach ($response['data'] as $task) {
+            $this->assertNotTrue($task['is_completed']);
+        }
+    }
+
     public function test_task_controller_show_shows_task()
     {
         $task = Task::factory()->create();

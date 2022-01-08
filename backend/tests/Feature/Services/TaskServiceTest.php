@@ -44,32 +44,35 @@ class TaskServiceTest extends TestCase
 
     public function test_paginated_completed_tasks_should_return_completed_tasks()
     {
-        Task::factory()->completed()->create();
+        Task::factory(5)->completed()->create();
 
-        Task::factory()->incompleted()->create();
+        Task::factory(5)->incompleted()->create();
 
         $paginator = $this->task_service->paginate('completed');
 
-        $first_task = $paginator->items()[0];
+        // To ensure all tasks returned are completed
+        foreach ($paginator->items() as $task) {
+            $this->assertTrue($task->is_completed);
 
-        $this->assertTrue($first_task->is_completed);
+            $this->assertNotTrue(!$task->is_completed);
+        }
 
-        $this->assertNotTrue(!$first_task->is_completed);
     }
 
     public function test_paginated_incompleted_tasks_should_return_incompleted_tasks()
     {
-        Task::factory()->completed()->create();
+        Task::factory(5)->completed()->create();
 
-        Task::factory()->incompleted()->create();
+        Task::factory(5)->incompleted()->create();
 
         $paginator = $this->task_service->paginate('incompleted');
 
-        $first_task = $paginator->items()[0];
+        // To ensure all tasks returned are incompleted
+        foreach ($paginator->items() as $task) {
+            $this->assertTrue(!$task->is_completed);
 
-        $this->assertTrue(!$first_task->is_completed);
-
-        $this->assertNotTrue($first_task->is_completed);
+            $this->assertNotTrue($task->is_completed);
+        }
     }
 
     public function test_get_task_should_return_task()
