@@ -13,13 +13,13 @@ A simple to-do app written using Laravel as the backend and Next JS as the front
 1. Clone this repo
 2. `cd backend`
 3. If you have php 8.0 and composer installed, run `composer install`, take note if you use this approach, subtitute `./vendor/bin/sail` to the appropriate `php` command. 
-4. Otherwise, run the following to spin up a light docker container to install the dependencies (recommended). 
+4. Otherwise, run the following to spin up a light docker container to install the dependencies (recommended). [See this link](https://laravel.com/docs/8.x/sail#installing-composer-dependencies-for-existing-projects)
 ```bash
    docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v $(pwd):/var/www/html \
     -w /var/www/html \
-    laravelsail/php81-composer:latest \
+    laravelsail/php80-composer:latest \
     composer install --ignore-platform-reqs
 ```
 5. Copy paste `.env.example` to `.env`
@@ -42,6 +42,7 @@ A simple to-do app written using Laravel as the backend and Next JS as the front
 ### Notes
 1. You might notice that I didn't use Laravel's model route binding in `TaskController`, this is intentional as I want to demostrate the Dependency Inversion Principle to bind the `TaskServiceInterface` to `TaskService`. 
 2. `JsonResponseMiddleware` was added so I can just force the response to be returned in JSON format as I don't want to deal with Content Negotation for this project at the moment.
+3. Adminer can be accessed at `http://127.0.0.1:8080`
 
 ### Test
 
@@ -70,5 +71,5 @@ Run `./vendor/bin/sail artisan test` to run the test
 2. `cd frontend`
 3. Run `yarn` to instal the dependencies
 4. Copy paste `.env.example` to `.env.local`
-5. By default, `NEXT_PUBLIC_BACKEND_API_URL` should be pointing to the backend URL. otherwise, change it to match your backend URL.
+5. By default, `NEXT_PUBLIC_BACKEND_API_URL` should be pointing to the backend URL. Otherwise, change it to match your backend URL.
 6. Run `yarn dev` to spin up the development server, the app should be running at `http://127.0.0.1:3000`
