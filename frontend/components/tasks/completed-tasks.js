@@ -2,29 +2,35 @@ import { mutateTasks, useGetTasks } from "../../hooks/tasks.hooks";
 import { incompleteTask, deleteTask } from "../../services/tasks.service";
 import { TaskContainer } from "./task-container";
 import { Container } from "../common/container";
+import { Pagination } from "../common/pagination";
+import { useContext } from "react";
+import { AppContext } from "../../context/app.context";
+import { usePagination } from "../../hooks/pagination.hooks";
 
 export const CompletedTasks = () => {
-  const { data, isLoading } = useGetTasks('completed');
+  const { completedTaskPage, incompletedTaskPage, setCompletedTaskPage } = useContext(AppContext);
+
+  const { data, isLoading } = useGetTasks('completed', completedTaskPage);
+
+  const { onClickPrev, onClickNext } = usePagination(completedTaskPage, setCompletedTaskPage, incompletedTaskPage, data?.meta?.last_page);
 
   const markTaskAsIncomplete = async (taskId) => {
     await incompleteTask(taskId);
-    mutateTasks();
+    mutateTasks(incompletedTaskPage, completedTaskPage);
   }
 
   const _deleteTask = async (taskId) => {
     await deleteTask(taskId);
-    mutateTasks();
+    mutateTasks(incompletedTaskPage, completedTaskPage);
   }
 
   return (
     <Container>
       <h2 className='text-xl font-semibold text-blue-600 my-4'>Completed Tasks</h2>
 
-      {isLoading && <div>Loading</div>}
-
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 mb-6">
         {data && data.data.map(task => (
-          <div className="flex flex-row space-x-2" key={data.data.id}>
+          <div className="flex flex-row space-x-2" key={task.id}>
             <button className="bg-orange-300 rounded-lg p-2" onClick={() => markTaskAsIncomplete(task.id)}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -39,6 +45,8 @@ export const CompletedTasks = () => {
           </div>
         ))}
       </div>
+
+      <Pagination from={data?.meta?.from} to={data?.meta?.to} total={data?.meta?.total} onClickPrev={() => onClickPrev()} onClickNext={() => onClickNext()}/>
     </Container>
   )
 }

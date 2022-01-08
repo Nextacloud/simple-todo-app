@@ -7,4 +7,9 @@ export const AppContext = createContext({
     message: ''
   },
   setNotification: () => {},
+
+  completedTaskPage: 1,
+  setCompletedTaskPage: () => {},
+  incompletedTaskPage: 1,
+  setIncompletedTaskPage: () => {},
 });

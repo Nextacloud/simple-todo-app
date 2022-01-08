@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import useSwr, { mutate } from 'swr';
 import { axiosFetcher } from '../utils/getAxiosFetcher';
 
-export const useGetTasks = (status) => {
-  const { data, error } = useSwr(`/api/tasks?status=${status}`, axiosFetcher);
+export const useGetTasks = (status, page = 1) => {
+  const { data, error } = useSwr(`/api/tasks?status=${status}&page=${page}`, axiosFetcher);
+
+  useEffect(() => {
+    console.log(status, page);
+  }, [page])
 
   return {
     data: data,
@@ -11,9 +16,9 @@ export const useGetTasks = (status) => {
   }
 }
 
-export const mutateTasks = () => {
-  mutate(`/api/tasks?status=completed`)
-  mutate(`/api/tasks?status=incompleted`)
+export const mutateTasks = (incompletedTaskPage = 1, completedTaskPage = 1) => {
+  mutate(`/api/tasks?status=completed&page=${completedTaskPage}`)
+  mutate(`/api/tasks?status=incompleted&page=${incompletedTaskPage}`)
 }
 
 export const useGetTask = (taskId) => {
