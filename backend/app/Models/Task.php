@@ -45,6 +45,11 @@ class Task extends Model
         return $query->whereNotNull('completed_at');
     }
 
+    public function scopeIsIncompleted(Builder $query): Builder
+    {
+        return $query->whereNull('completed_at');
+    }
+
     // Accessors
 
     /**

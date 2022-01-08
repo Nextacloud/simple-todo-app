@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Services\TaskServiceInterface;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Log\Logger;
 
@@ -24,12 +25,13 @@ class TaskController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
+        $status = $request->query('status', null);
 
         $this->logger->info('Fetching tasks');
 
-        $tasks = $this->task_service->paginate();
+        $tasks = $this->task_service->paginate($status);
 
         return TaskResource::collection($tasks);
     }

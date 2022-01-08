@@ -42,6 +42,36 @@ class TaskServiceTest extends TestCase
         $this->assertEquals($task->title, $first_task->title);
     }
 
+    public function test_paginated_completed_tasks_should_return_completed_tasks()
+    {
+        Task::factory()->completed()->create();
+
+        Task::factory()->incompleted()->create();
+
+        $paginator = $this->task_service->paginate('completed');
+
+        $first_task = $paginator->items()[0];
+
+        $this->assertTrue($first_task->is_completed);
+
+        $this->assertNotTrue(!$first_task->is_completed);
+    }
+
+    public function test_paginated_incompleted_tasks_should_return_incompleted_tasks()
+    {
+        Task::factory()->completed()->create();
+
+        Task::factory()->incompleted()->create();
+
+        $paginator = $this->task_service->paginate('incompleted');
+
+        $first_task = $paginator->items()[0];
+
+        $this->assertTrue(!$first_task->is_completed);
+
+        $this->assertNotTrue($first_task->is_completed);
+    }
+
     public function test_get_task_should_return_task()
     {
         $task = Task::factory()->create();

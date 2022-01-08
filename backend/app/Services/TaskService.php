@@ -10,9 +10,15 @@ use Illuminate\Database\Eloquent\Collection;
 class TaskService implements TaskServiceInterface
 {
 
-    public function paginate(): Paginator
+    public function paginate(?string $status = null): Paginator
     {
-        return Task::latest()->paginate();
+        $tasks_query = Task::query()->latest();
+
+        if ($status === 'completed') $tasks_query = $tasks_query->isCompleted();
+
+        if ($status === 'incompleted') $tasks_query = $tasks_query->isIncompleted();
+
+        return $tasks_query->paginate();
     }
 
     public function list(): Collection

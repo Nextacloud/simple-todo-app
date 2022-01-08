@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface TaskServiceInterface
 {
-    public function paginate(): Paginator;
+    public function paginate(?string $status = null): Paginator;
 
     public function list(): Collection;
 

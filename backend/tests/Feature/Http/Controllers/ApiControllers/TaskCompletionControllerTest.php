@@ -15,7 +15,7 @@ class TaskCompletionControllerTest extends TestCase
 
     public function test_can_mark_as_completed_an_incompleted_task()
     {
-        $task = Task::factory()->incomplete()->create();
+        $task = Task::factory()->incompleted()->create();
 
         $this->assertTrue(!$task->is_completed);
 
@@ -30,7 +30,7 @@ class TaskCompletionControllerTest extends TestCase
 
     public function test_cannot_mark_as_completed_a_completed_task()
     {
-        $task = Task::factory()->complete()->create();
+        $task = Task::factory()->completed()->create();
 
         $this->assertTrue($task->is_completed);
 
@@ -45,7 +45,7 @@ class TaskCompletionControllerTest extends TestCase
 
     public function test_can_mark_as_incompleted_a_completed_task()
     {
-        $task = Task::factory()->complete()->create();
+        $task = Task::factory()->completed()->create();
 
         $response = $this->postJson(route('tasks.completion.incomplete', ['task' => $task->id]));
 
@@ -58,7 +58,7 @@ class TaskCompletionControllerTest extends TestCase
 
     public function test_cannot_mark_as_incompleted_an_incompleted_task()
     {
-        $task = Task::factory()->incomplete()->create();
+        $task = Task::factory()->incompleted()->create();
 
         $this->assertTrue(!$task->is_completed);
 

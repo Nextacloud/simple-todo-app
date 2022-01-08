@@ -22,7 +22,7 @@ class TaskFactory extends Factory
         ];
     }
 
-    public function complete()
+    public function completed()
     {
         return $this->state(function (array $attributes) {
             return [
@@ -31,7 +31,7 @@ class TaskFactory extends Factory
         });
     }
 
-    public function incomplete()
+    public function incompleted()
     {
         return $this->state(function (array $attributes) {
             return [
