@@ -12,13 +12,13 @@ class TaskService implements TaskServiceInterface
 
     public function paginate(?string $status = null): Paginator
     {
-        $tasks_query = Task::query()->latest();
+        $tasks_query = Task::query();
 
-        if ($status === 'completed') $tasks_query = $tasks_query->isCompleted();
+        if ($status === 'completed') $tasks_query = $tasks_query->isCompleted()->latest('completed_at');
 
-        if ($status === 'incompleted') $tasks_query = $tasks_query->isIncompleted();
+        if ($status === 'incompleted') $tasks_query = $tasks_query->isIncompleted()->latest();
 
-        return $tasks_query->paginate();
+        return $tasks_query->paginate(10);
     }
 
     public function list(): Collection
