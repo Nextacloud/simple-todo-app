@@ -5,6 +5,7 @@ import { createTask, updateTask } from '../../services/tasks.service';
 import { sleep } from '../../utils/common';
 import { ErrorText } from '../common/error-text';
 import { useRouter } from 'next/router'
+import { mutate } from 'swr';
 
 export const TaskForm = ({ task }) => {
 
@@ -17,6 +18,11 @@ export const TaskForm = ({ task }) => {
     const res = !!task
       ? await updateTask({id: task.id, title, description})
       : await createTask({title, description})
+
+    if (!!task && res.status === 200) {
+      // For whatever reason, I need to mutate first because useSwr will return stale value after update
+      mutate(`/api/tasks/${task.id}`, {...task, title:title, description:description})
+    }
 
     return res;
   }

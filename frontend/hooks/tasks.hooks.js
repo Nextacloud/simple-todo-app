@@ -48,7 +48,7 @@ export const mutateTasksList = (status, page) => {
  */
 export const useGetTask = (taskId) => {
 
-  const { data, error } = useSwr(`/api/tasks/${taskId}`, axiosFetcher);
+  const { data, error } = useSwr(`/api/tasks/${taskId}`, axiosFetcher, {revalidateOnMount: true});
 
   return {
     data: data,
